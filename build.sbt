@@ -16,7 +16,10 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql"       % "42.1.4",
   "org.flywaydb"   % "flyway-core"      % "4.2.0",
   // Logging
-  "ch.qos.logback" % "logback-classic" % "1.2.3"
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  // Testing
+  "org.specs2"   %% "specs2-core"   % "4.0.0-RC4" % "test",
+  "org.tpolecat" %% "doobie-specs2" % "0.5.0-M6"  % "test"
 )
 
 fork in run := true
