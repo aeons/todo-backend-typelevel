@@ -1,7 +1,8 @@
-package todo
+package todo.db
 
 import doobie._
 import doobie.implicits._
+import todo.{Todo, TodoId}
 
 object Database {
   def all: ConnectionIO[List[Todo]] =
