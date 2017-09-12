@@ -9,8 +9,7 @@ import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 
-case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F])
-    extends Http4sDsl[F] {
+case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]) extends Http4sDsl[F] {
   implicit def circeJsonDecoder[A: Decoder]: EntityDecoder[F, A] = jsonOf[F, A]
 
   val service: HttpService[F] = HttpService[F] {
@@ -27,7 +26,7 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
         resp     <- Ok(todo.asJson)
       } yield resp
 
-    case GET -> Root / "todos" / IntVar(id) =>
+    case GET -> Root / IntVar(id) =>
       val resp = for {
         todo <- todoService.get(TodoId(id))
         resp <- OptionT.liftF(Ok(todo.asJson))
@@ -35,7 +34,7 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
 
       resp.getOrElseF(NotFound())
 
-    case req @ PATCH -> Root / "todos" / IntVar(id) =>
+    case req @ PATCH -> Root / IntVar(id) =>
       val resp =
         for {
           patchTodo   <- OptionT.liftF(req.as[PatchTodo])
@@ -45,7 +44,7 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
 
       resp.getOrElseF(NotFound())
 
-    case DELETE -> Root / "todos" / IntVar(id) =>
+    case DELETE -> Root / IntVar(id) =>
       todoService.delete(TodoId(id)) >>
         Ok()
 

@@ -9,8 +9,7 @@ import org.http4s.server.middleware.CORS
 import org.http4s.util.StreamApp
 import todo.config.Configuration
 
-class TodoBackend[F[_]](implicit F: Effect[F], S: Semigroup[F[MaybeResponse[F]]])
-    extends StreamApp[F] {
+class TodoBackend[F[_]](implicit F: Effect[F]) extends StreamApp[F] {
 
   override def stream(args: List[String], requestShutdown: F[Unit]): Stream[F, Nothing] =
     for {
@@ -18,7 +17,7 @@ class TodoBackend[F[_]](implicit F: Effect[F], S: Semigroup[F[MaybeResponse[F]]]
       todoService <- Stream.eval(F.delay(DoobieTodoService(transactor)))
       server <- BlazeBuilder[F]
         .bindHttp()
-        .mountService(CORS(TodoWebService[F](todoService).service))
+        .mountService(CORS(TodoWebService[F](todoService).service), "/todos/")
         .serve
     } yield server
 

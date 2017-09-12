@@ -11,15 +11,14 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % "0.18.0-SNAPSHOT",
   "io.circe"   %% "circe-generic"       % "0.9.0-M1",
   // Database
-  "org.tpolecat"   %% "doobie-core"     % "0.5.0-M6",
-  "org.tpolecat"   %% "doobie-postgres" % "0.5.0-M6",
-  "org.postgresql" % "postgresql"       % "42.1.4",
+  "org.tpolecat"   %% "doobie-core"     % "0.5.0-M7",
+  "org.tpolecat"   %% "doobie-postgres" % "0.5.0-M7",
   "org.flywaydb"   % "flyway-core"      % "4.2.0",
   // Logging
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   // Testing
   "org.specs2"   %% "specs2-core"   % "4.0.0-RC4" % "test",
-  "org.tpolecat" %% "doobie-specs2" % "0.5.0-M6"  % "test"
+  "org.tpolecat" %% "doobie-specs2" % "0.5.0-M7"  % "test"
 )
 
 fork in run := true
@@ -31,4 +30,4 @@ scalacOptions ++= Seq(
   "-language:higherKinds"
 )
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.patch)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.patch)
