@@ -32,7 +32,7 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
         resp <- OptionT.liftF(Ok(todo.asJson))
       } yield resp
 
-      resp.getOrElseF(NotFound())
+      resp.getOrElse(Response.notFound)
 
     case req @ PATCH -> Root / IntVar(id) =>
       val resp =
@@ -42,7 +42,7 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
           resp        <- OptionT.liftF(Ok(updatedTodo.asJson))
         } yield resp
 
-      resp.getOrElseF(NotFound())
+      resp.getOrElse(Response.notFound)
 
     case DELETE -> Root / IntVar(id) =>
       todoService.delete(TodoId(id)) >>
