@@ -5,8 +5,7 @@ import cats.effect._
 import fs2._
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.middleware.CORS
-import org.http4s.util.StreamApp
-import org.http4s.util.StreamApp.ExitCode
+import org.http4s.util.{ExitCode, StreamApp}
 import todo.config.Configuration
 
 class TodoBackend[F[_]](implicit F: Effect[F]) extends StreamApp[F] {

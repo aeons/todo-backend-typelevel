@@ -1,7 +1,7 @@
 package todo
 
 import cats.data.OptionT
-import cats.effect.Sync
+import cats.effect.Effect
 import cats.implicits._
 import io.circe.Decoder
 import io.circe.syntax._
@@ -9,7 +9,7 @@ import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
 
-case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]) extends Http4sDsl[F] {
+case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Effect[F]) extends Http4sDsl[F] {
   implicit def circeJsonDecoder[A: Decoder]: EntityDecoder[F, A] = jsonOf[F, A]
 
   val service: HttpService[F] = HttpService[F] {
@@ -45,11 +45,11 @@ case class TodoWebService[F[_]](todoService: TodoService[F])(implicit F: Sync[F]
       resp.getOrElse(Response.notFound)
 
     case DELETE -> Root / IntVar(id) =>
-      todoService.delete(TodoId(id)) >>
+      todoService.delete(TodoId(id)) *>
         Ok()
 
     case DELETE -> Root =>
-      todoService.deleteAll >>
+      todoService.deleteAll *>
         Ok()
   }
 }

@@ -9,7 +9,7 @@ import todo.config.DatabaseConfig
 package object db {
 
   def init[F[_]: Async](config: DatabaseConfig): F[Transactor[F]] =
-    migrate[F](config) >> transactor[F](config)
+    migrate[F](config) *> transactor[F](config)
 
   def transactor[F[_]](config: DatabaseConfig)(implicit F: Async[F]): F[Transactor[F]] =
     F.delay(Transactor.fromDriverManager[F](config.driver, config.url, config.user, config.pass))
