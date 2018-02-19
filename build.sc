@@ -24,14 +24,13 @@ object todo extends ScalaModule {
     MavenRepository("https://oss.sonatype.org/content/repositories/releases")
   )
 
-  // Either convert tests to utest or wait for specs2 support
-  // object test extends Tests {
-  //   def testFramework = "specs2"
-  //   def ivyDeps = Agg(
-  //     ivy"org.specs2::specs2-core:4.0.2",
-  //     ivy"org.tpolecat::doobie-specs2:0.5.0"
-  //   )
-  // }
+  object test extends Tests {
+    def testFramework = "org.specs2.runner.Specs2Framework"
+    def ivyDeps = Agg(
+      ivy"org.specs2::specs2-core:4.0.2",
+      ivy"org.tpolecat::doobie-specs2:0.5.0"
+    )
+  }
 
   def scalacOptions =  Seq(
     "-deprecation",                      // Emit warning and location for usages of deprecated APIs.

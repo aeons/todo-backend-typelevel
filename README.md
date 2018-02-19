@@ -18,7 +18,7 @@ To run the default tests for Todo-Backend, you will need a running database.
 This can be handled by docker by running the following:
 
 ```
-docker run --rm -d -p 5432:5432 postgres:10
+docker run --rm -d -p 5432:5432 --name todo-backend-postgres postgres:10
 ```
 
 This project is built using [`mill`](http://www.lihaoyi.com/mill/).
