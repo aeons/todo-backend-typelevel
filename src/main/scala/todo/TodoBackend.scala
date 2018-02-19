@@ -2,13 +2,15 @@ package todo
 
 import cats._
 import cats.effect._
+import fs2.StreamApp.ExitCode
 import fs2._
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.middleware.CORS
-import org.http4s.util.{ExitCode, StreamApp}
 import todo.config.Configuration
 
-class TodoBackend[F[_]](implicit F: Effect[F]) extends StreamApp[F] {
+import scala.concurrent.ExecutionContext
+
+class TodoBackend[F[_]](implicit F: Effect[F], ec: ExecutionContext) extends StreamApp[F] {
 
   override def stream(args: List[String], requestShutdown: F[Unit]): Stream[F, ExitCode] =
     for {

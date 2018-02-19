@@ -6,7 +6,7 @@ import todo.{Todo, TodoId}
 
 object Database {
   def all: ConnectionIO[List[Todo]] =
-    queries.all.list
+    queries.all.to[List]
 
   def get(id: TodoId): ConnectionIO[Option[Todo]] =
     sql"select * from todos where id = $id".query[Todo].option
