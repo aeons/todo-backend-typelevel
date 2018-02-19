@@ -15,8 +15,8 @@ object QuerySpec extends Specification with IOChecker {
   check(deleteAll)
 
   check(get(TodoId(0)))
-  check(insert("title", Some(100)))
-  check(update(TodoId(0), "title", 42, true))
+  check(insert("", None))
+  check(update(TodoId(0), "", 0, false))
   check(delete(TodoId(0)))
 
 }
