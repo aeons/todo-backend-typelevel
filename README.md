@@ -1,7 +1,7 @@
 # todo-backend
 
-This is an implementation of [Todo-Backend](https://www.todobackend.com/) using 
-the next generation of releases of the 
+This is an implementation of [Todo-Backend](https://www.todobackend.com/) using
+the next generation of releases of the
 [Typelevel](https://typelevel.org/) stack of Scala libraries.
 
 The following libraries are used:
@@ -14,15 +14,16 @@ The following libraries are used:
 
 # Running tests
 
-To run the default tests for Todo-Backend, you will need a running database. 
+To run the default tests for Todo-Backend, you will need a running database.
 This can be handled by docker by running the following:
 
 ```
 docker run --rm -d -p 5432:5432 postgres:10
-``` 
+```
 
-After that open `sbt` and run `reStart` to start the server via 
-[`sbt-revolver`](https://github.com/spray/sbt-revolver).
+This project is built using [`mill`](http://www.lihaoyi.com/mill/).
 
-Finally, visit [http://www.todobackend.com/specs/index.html?http://localhost:8080/todos/]() 
+To run the server call `mill todo.run`.
+
+Finally, visit [http://www.todobackend.com/specs/index.html?http://localhost:8080/todos/]()
 to run the test suite on your local server.

@@ -20,4 +20,5 @@ package object db {
       flyway.setDataSource(config.url, config.user, config.pass)
       val _ = flyway.migrate()
     }
+
 }

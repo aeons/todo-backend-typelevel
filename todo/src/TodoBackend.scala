@@ -1,6 +1,5 @@
 package todo
 
-import cats._
 import cats.effect._
 import fs2.StreamApp.ExitCode
 import fs2._
