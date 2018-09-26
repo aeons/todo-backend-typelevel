@@ -5,7 +5,7 @@ import doobie.implicits._
 import todo.{Todo, TodoId}
 
 object Database {
-  def all: ConnectionIO[List[Todo]] =
+  val all: ConnectionIO[List[Todo]] =
     queries.all.to[List]
 
   def get(id: TodoId): ConnectionIO[Option[Todo]] =
@@ -24,7 +24,7 @@ object Database {
   def delete(id: TodoId): ConnectionIO[Int] =
     queries.delete(id).run
 
-  def deleteAll: ConnectionIO[Int] =
+  val deleteAll: ConnectionIO[Int] =
     queries.deleteAll.run
 
   object queries {

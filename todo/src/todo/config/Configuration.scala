@@ -1,6 +1,11 @@
 package todo.config
 
-case class DatabaseConfig(driver: String, url: String, user: String, pass: String)
+case class DatabaseConfig(
+    driver: String,
+    url: String,
+    user: String,
+    pass: String
+)
 
 object Configuration {
 
@@ -12,4 +17,3 @@ object Configuration {
   )
 
 }
-

@@ -1,34 +1,43 @@
-import mill._
-import mill.scalalib._
+import mill._, scalalib._, scalafmt._
 import coursier.maven.MavenRepository
 
-object todo extends ScalaModule {
-  def scalaVersion = "2.12.4"
+object todo extends ScalaModule with ScalafmtModule {
+  def scalaVersion = "2.12.6"
+
+  val http4sVersion = "0.19.0-SNAPSHOT"
+  val doobieVersion = "0.6.0-SNAPSHOT"
 
   def ivyDeps = Agg(
-    ivy"org.http4s::http4s-dsl:0.18.0",
-    ivy"org.http4s::http4s-circe:0.18.0",
-    ivy"org.http4s::http4s-blaze-server:0.18.0",
-    ivy"io.circe::circe-generic:0.9.1",
+    ivy"org.http4s::http4s-dsl:$http4sVersion",
+    ivy"org.http4s::http4s-circe:$http4sVersion",
+    ivy"org.http4s::http4s-blaze-server:$http4sVersion",
+    ivy"io.circe::circe-derivation:0.10.0-M1",
+    ivy"org.scalaz::deriving-macro:1.0.0",
+    ivy"io.estatico::newtype:0.4.2",
     // Database
-    ivy"org.tpolecat::doobie-core:0.5.0",
-    ivy"org.tpolecat::doobie-postgres:0.5.0",
-    ivy"org.flywaydb:flyway-core:5.0.7",
+    ivy"org.tpolecat::doobie-core:$doobieVersion",
+    ivy"org.tpolecat::doobie-postgres:$doobieVersion",
+    ivy"org.tpolecat::doobie-hikari:$doobieVersion",
+    ivy"org.flywaydb:flyway-core:5.1.4",
     // Logging
     ivy"ch.qos.logback:logback-classic:1.2.3",
   )
 
-  def scalacPluginIvyDeps = Agg(ivy"org.scalamacros:paradise_${scalaVersion()}:2.1.1")
+  def scalacPluginIvyDeps = Agg(
+    ivy"org.scalamacros:::paradise:2.1.1",
+    ivy"org.scalaz::deriving-plugin:1.0.0",
+  )
 
   def repositories = super.repositories ++ Seq(
-    MavenRepository("https://oss.sonatype.org/content/repositories/releases")
+    MavenRepository("https://oss.sonatype.org/content/repositories/releases"),
+    MavenRepository("https://oss.sonatype.org/content/repositories/snapshots"),
   )
 
   object test extends Tests {
-    def testFramework = "org.specs2.runner.Specs2Framework"
+    def testFrameworks = Seq("org.specs2.runner.Specs2Framework")
     def ivyDeps = Agg(
-      ivy"org.specs2::specs2-core:4.0.2",
-      ivy"org.tpolecat::doobie-specs2:0.5.0"
+      ivy"org.specs2::specs2-core:4.3.4",
+      ivy"org.tpolecat::doobie-specs2:$doobieVersion",
     )
   }
 
@@ -56,7 +65,6 @@ object todo extends ScalaModule {
     "-Xlint:nullary-override",           // Warn when non-nullary `def f()' overrides nullary `def f'.
     "-Xlint:nullary-unit",               // Warn when nullary methods return Unit.
     "-Xlint:option-implicit",            // Option.apply used implicit view.
-    "-Xlint:package-object-classes",     // Class or object defined in package object.
     "-Xlint:poly-implicit-overload",     // Parameterized overloaded implicit methods are not visible as view bounds.
     "-Xlint:private-shadow",             // A private field (or class parameter) shadows a superclass field.
     "-Xlint:stars-align",                // Pattern sequence wildcard must align with sequence component.

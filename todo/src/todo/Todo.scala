@@ -1,34 +1,30 @@
 package todo
 
 import io.circe._
-import io.circe.generic.JsonCodec
-
-@JsonCodec case class TodoId(id: Int) extends AnyVal
 
 case class Todo(
     id: TodoId,
     title: String,
     order: Int,
     completed: Boolean
-) {
-  val url: String = s"http://localhost:8080/todos/${id.id}"
-}
-
+)
 object Todo {
 
   implicit val encodeTodo: Encoder[Todo] =
     Encoder.forProduct4("title", "order", "completed", "url") { todo =>
-      (todo.title, todo.order, todo.completed, todo.url)
+      (todo.title, todo.order, todo.completed, s"http://localhost:8080/todos/${todo.id.asInt}")
     }
 
 }
 
-@JsonCodec case class PostTodo(
+@scalaz.deriving(Decoder)
+case class PostTodo(
     title: String,
     order: Option[Int]
 )
 
-@JsonCodec case class PatchTodo(
+@scalaz.deriving(Decoder)
+case class PatchTodo(
     title: Option[String],
     order: Option[Int],
     completed: Option[Boolean]

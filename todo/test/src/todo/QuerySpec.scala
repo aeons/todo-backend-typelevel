@@ -1,15 +1,25 @@
 package todo
 
-import cats.effect.IO
+import cats.effect._
 import doobie.specs2._
 import doobie.util.transactor.Transactor
 import org.specs2.mutable.Specification
+import scala.concurrent.ExecutionContext
 import todo.config.Configuration
 import todo.db.Database.queries._
 
 object QuerySpec extends Specification with IOChecker {
 
-  val transactor: Transactor[IO] = db.init[IO](Configuration.db).unsafeRunSync()
+  implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+
+  db.migrate[IO](Configuration.db).unsafeRunSync()
+
+  val transactor: Transactor[IO] = Transactor.fromDriverManager[IO](
+    Configuration.db.driver,
+    Configuration.db.url,
+    Configuration.db.user,
+    Configuration.db.pass,
+  )
 
   check(all)
   check(deleteAll)

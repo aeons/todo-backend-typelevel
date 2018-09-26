@@ -2,17 +2,26 @@ package todo
 
 import cats.effect._
 import cats.implicits._
-import doobie.util.transactor.Transactor
+import doobie._
+import doobie.hikari._
 import org.flywaydb.core.Flyway
 import todo.config.DatabaseConfig
 
 package object db {
 
-  def init[F[_]: Async](config: DatabaseConfig): F[Transactor[F]] =
-    migrate[F](config) *> transactor[F](config)
-
-  def transactor[F[_]](config: DatabaseConfig)(implicit F: Async[F]): F[Transactor[F]] =
-    F.delay(Transactor.fromDriverManager[F](config.driver, config.url, config.user, config.pass))
+  def transactor[F[_]: Async: ContextShift](config: DatabaseConfig): Resource[F, Transactor[F]] =
+    for {
+      ce <- ExecutionContexts.fixedThreadPool[F](32)
+      te <- ExecutionContexts.cachedThreadPool[F]
+      xa <- HikariTransactor.newHikariTransactor[F](
+        config.driver,
+        config.url,
+        config.user,
+        config.pass,
+        ce,
+        te,
+      )
+    } yield xa
 
   def migrate[F[_]](config: DatabaseConfig)(implicit F: Sync[F]): F[Unit] =
     F.delay {

@@ -1,24 +1,23 @@
 package todo
 
 import cats.effect._
-import fs2.StreamApp.ExitCode
 import fs2._
-import org.http4s.server.blaze.BlazeBuilder
+import org.http4s.implicits._
+import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import todo.config.Configuration
 
-import scala.concurrent.ExecutionContext
+object TodoBackend {
 
-class TodoBackend[F[_]](implicit F: Effect[F], ec: ExecutionContext) extends StreamApp[F] {
-
-  override def stream(args: List[String], requestShutdown: F[Unit]): Stream[F, ExitCode] =
+  def stream[F[_]: ConcurrentEffect: ContextShift]: Stream[F, ExitCode] =
     for {
-      transactor  <- Stream.eval(db.init(Configuration.db))
-      todoService <- Stream.eval(F.delay(DoobieTodoService(transactor)))
-      server <- BlazeBuilder[F]
-        .bindHttp()
-        .mountService(CORS(TodoWebService[F](todoService).service), "/todos/")
+      _     <- Stream.eval(db.migrate[F](Configuration.db))
+      xa    <- Stream.resource(db.transactor[F](Configuration.db))
+      todos <- Stream(Todos.impl[F](xa))
+      exitCode <- BlazeServerBuilder[F]
+        .bindHttp(8080, "0.0.0.0")
+        .withHttpApp(CORS(TodoRoutes[F](todos).routes.orNotFound))
         .serve
-    } yield server
+    } yield exitCode
 
 }

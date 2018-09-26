@@ -5,11 +5,13 @@ the next generation of releases of the
 [Typelevel](https://typelevel.org/) stack of Scala libraries.
 
 The following libraries are used:
-- [cats-1.0.1](https://typelevel.org/cats/)
-- [fs2-0.10.1](https://fs2.co)
-- [http4s-0.18.0](https://http4s.org)
-- [circe-0.9.1](https://circe.github.io/circe/)
-- [doobie-0.5.0](http://tpolecat.github.io/doobie/)
+- [cats-1.4.0](https://typelevel.org/cats/)
+- [fs2-1.0.0-RC1](https://fs2.co)
+- [http4s-0.19.0-SNAPSHOT](https://http4s.org)
+- [circe-0.10.0](https://circe.github.io/circe/)
+- [doobie-0.6.0-SNAPSHOT](http://tpolecat.github.io/doobie/)
+- [newtype-0.4.2](https://github.com/estatico/scala-newtype)
+- [scalaz-deriving-1.0.0](https://github.com/scalaz/scalaz-deriving)
 - (and Flyway for database migrations)
 
 # Running tests
@@ -23,7 +25,7 @@ docker run --rm -d -p 5432:5432 --name todo-backend-postgres postgres:10
 
 This project is built using [`mill`](http://www.lihaoyi.com/mill/).
 
-To run the server call `mill todo.run`.
+To run the server call `mill todo.run`. To automatically restart the server on code changes, call `mill --watch todo.runBackground`.
 
 Finally, visit [http://www.todobackend.com/specs/index.html?http://localhost:8080/todos/]()
 to run the test suite on your local server.
