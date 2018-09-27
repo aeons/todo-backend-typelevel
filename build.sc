@@ -4,8 +4,8 @@ import coursier.maven.MavenRepository
 object todo extends ScalaModule with ScalafmtModule {
   def scalaVersion = "2.12.6"
 
-  val http4sVersion = "0.19.0-SNAPSHOT"
-  val doobieVersion = "0.6.0-SNAPSHOT"
+  val http4sVersion = "0.19.0-M3"
+  val doobieVersion = "0.6.0-M3"
 
   def ivyDeps = Agg(
     ivy"org.http4s::http4s-dsl:$http4sVersion",

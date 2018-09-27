@@ -7,9 +7,9 @@ the next generation of releases of the
 The following libraries are used:
 - [cats-1.4.0](https://typelevel.org/cats/)
 - [fs2-1.0.0-RC1](https://fs2.co)
-- [http4s-0.19.0-SNAPSHOT](https://http4s.org)
+- [http4s-0.19.0-M3](https://http4s.org)
 - [circe-0.10.0](https://circe.github.io/circe/)
-- [doobie-0.6.0-SNAPSHOT](http://tpolecat.github.io/doobie/)
+- [doobie-0.6.0-M3](http://tpolecat.github.io/doobie/)
 - [newtype-0.4.2](https://github.com/estatico/scala-newtype)
 - [scalaz-deriving-1.0.0](https://github.com/scalaz/scalaz-deriving)
 - (and Flyway for database migrations)
