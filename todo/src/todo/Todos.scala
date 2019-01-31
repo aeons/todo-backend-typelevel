@@ -1,8 +1,9 @@
 package todo
 
 import cats._
-import cats.implicits._
 import cats.data.OptionT
+import cats.effect.Bracket
+import cats.implicits._
 import doobie._
 import doobie.implicits._
 import todo.db.Database
@@ -21,7 +22,7 @@ trait Todos[F[_]] {
 
 object Todos {
 
-  def impl[F[_]: Monad](xa: Transactor[F]): Todos[F] = new Todos[F] {
+  def impl[F[_]: Monad: Bracket[?[_], Throwable]](xa: Transactor[F]): Todos[F] = new Todos[F] {
 
     def getAll: F[List[Todo]] =
       Database.all.transact(xa)
