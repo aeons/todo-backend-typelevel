@@ -1,7 +1,7 @@
 import mill._, scalalib._, scalafmt._
 import coursier.maven.MavenRepository
 
-object todo extends ScalaModule with ScalafmtModule {
+object todo extends ScalaModule {
   def scalaVersion = "2.12.6"
 
   val http4sVersion = "0.19.0-M3"
