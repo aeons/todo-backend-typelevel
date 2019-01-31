@@ -25,9 +25,8 @@ package object db {
 
   def migrate[F[_]](config: DatabaseConfig)(implicit F: Sync[F]): F[Unit] =
     F.delay {
-      val flyway = new Flyway
-      flyway.setDataSource(config.url, config.user, config.pass)
-      val _ = flyway.migrate()
+      Flyway.configure().dataSource(config.url, config.user, config.pass).load().migrate()
+      ()
     }
 
 }
