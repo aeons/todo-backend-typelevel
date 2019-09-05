@@ -9,24 +9,27 @@ import todo.config.DatabaseConfig
 
 package object db {
 
-  def transactor[F[_]: Async: ContextShift](config: DatabaseConfig): Resource[F, Transactor[F]] =
+  def transactor[F[_]: Async: ContextShift](config: DatabaseConfig, blocker: Blocker): Resource[F, Transactor[F]] =
     for {
       ce <- ExecutionContexts.fixedThreadPool[F](32)
-      te <- ExecutionContexts.cachedThreadPool[F]
       xa <- HikariTransactor.newHikariTransactor[F](
         config.driver,
         config.url,
         config.user,
         config.pass,
         ce,
-        te,
+        blocker,
       )
     } yield xa
 
   def migrate[F[_]](config: DatabaseConfig)(implicit F: Sync[F]): F[Unit] =
-    F.delay {
-      Flyway.configure().dataSource(config.url, config.user, config.pass).load().migrate()
-      ()
-    }
+    F.delay(
+        Flyway
+          .configure()
+          .dataSource(config.url, config.user, config.pass)
+          .load()
+          .migrate(),
+      )
+      .void
 
 }

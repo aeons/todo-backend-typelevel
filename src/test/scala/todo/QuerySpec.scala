@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext
 import todo.config.Configuration
 import todo.db.Database.queries._
 
-object QuerySpec extends Specification with IOChecker {
+class QuerySpec extends Specification with IOChecker {
 
   implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
 

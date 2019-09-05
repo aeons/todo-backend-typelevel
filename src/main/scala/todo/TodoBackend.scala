@@ -1,7 +1,6 @@
 package todo
 
 import cats.effect._
-import cats.implicits._
 import org.http4s.implicits._
 import org.http4s.server.Server
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -12,8 +11,9 @@ object TodoBackend {
 
   def start[F[_]: ConcurrentEffect: ContextShift: Timer]: Resource[F, Server[F]] =
     for {
-      _  <- Resource.liftF(db.migrate[F](Configuration.db))
-      xa <- db.transactor[F](Configuration.db)
+      blocker <- Blocker[F]
+      _       <- Resource.liftF(db.migrate[F](Configuration.db))
+      xa      <- db.transactor[F](Configuration.db, blocker)
       server <- BlazeServerBuilder[F]
         .bindHttp(8080, "0.0.0.0")
         .withHttpApp(CORS(TodoRoutes[F](Todos.impl[F](xa)).routes.orNotFound))

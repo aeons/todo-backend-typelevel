@@ -4,7 +4,7 @@ case class DatabaseConfig(
     driver: String,
     url: String,
     user: String,
-    pass: String
+    pass: String,
 )
 
 object Configuration {
@@ -13,7 +13,7 @@ object Configuration {
     driver = "org.postgresql.Driver",
     url = "jdbc:postgresql://localhost/postgres",
     user = "postgres",
-    pass = ""
+    pass = "",
   )
 
 }
